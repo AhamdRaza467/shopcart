@@ -51,24 +51,7 @@ ecommerce/
 
 ```
 cd c:\Users\raora\Desktop\shopcart\ecommerce
-```
 
-### Step 2: Configure Environment Variables
-
-Edit `.env` in the root `ecommerce/` folder:
-
-```env
-MONGO_URI=mongodb://localhost:27017/shopcart
-JWT_SECRET=shopcart_super_secret_jwt_key_2024
-PORT=5000
-
-# JazzCash (get from JazzCash merchant portal)
-JAZZCASH_MERCHANT_ID=your_merchant_id
-JAZZCASH_PASSWORD=your_password
-JAZZCASH_INTEGRITY_SALT=your_salt
-JAZZCASH_RETURN_URL=http://localhost:5173/order-confirm
-JAZZCASH_API_URL=https://sandbox.jazzcash.com.pk/ApplicationAPI/API/2.0/Purchase/DoMWalletTransaction
-```
 
 ### Step 3: Install Backend Dependencies
 
