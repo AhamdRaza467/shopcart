@@ -19,14 +19,6 @@
       "destination": "/backend/server.js"
     },
     {
-      "source": "/images/(.*)",
-      "destination": "/frontend/images/$1"
-    },
-    {
-      "source": "/assets/(.*)",
-      "destination": "/frontend/assets/$1"
-    },
-    {
       "source": "/(.*)",
       "destination": "/frontend/index.html"
     }
