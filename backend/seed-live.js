@@ -26,8 +26,8 @@ const seedLiveDB = async () => {
       console.log('Seeding Admin account into LIVE database...');
       await User.create({
         name: 'Admin User',
-        email: 'admin@shopcart.pk',
-        password: 'admin123',
+        email: process.env.ADMIN_EMAIL || 'admin@shopcart.pk',
+        password: process.env.ADMIN_PASSWORD || 'secureadminpass123',
         role: 'admin'
       });
       console.log('Admin seeded successfully!');

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+require('dotenv').config({ path: '../.env' });
 
-const uri = 'mongodb+srv://shopcartuser:shopcart09ahmad@cluster0.wcobjpb.mongodb.net/shopcart?retryWrites=true&w=majority&appName=Cluster0';
+const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri, {
   serverSelectionTimeoutMS: 5000

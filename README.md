@@ -21,22 +21,22 @@ Pakistan's premier online shopping destination built with React, Node.js, MongoD
 
 ```
 ecommerce/
-├── frontend/          # React + Vite app
+├── frontend/          # React + Vite frontend application
 │   ├── public/
-│   │   └── images/products/   # 20 product images
+│   │   └── images/    # Static assets and product images
 │   └── src/
-│       ├── components/        # Navbar, Footer, ProductCard, etc.
-│       ├── pages/             # All user & admin pages
-│       ├── context/           # AuthContext, CartContext
-│       └── App.jsx
+│       ├── components/ # Reusable UI components
+│       ├── pages/      # Route level components
+│       ├── context/    # React context (Auth, Cart)
+│       └── App.jsx     # Main application entry point
 ├── backend/           # Express API server
-│   ├── config/        # MongoDB connection
-│   ├── models/        # User, Product, Order, Review
-│   ├── controllers/   # Business logic
-│   ├── routes/        # API routes
-│   ├── middleware/    # Auth & Admin guards
-│   └── seed/          # 20 sample products
-└── .env               # Environment variables
+│   ├── config/        # Environment and DB configuration
+│   ├── models/        # Mongoose database schemas
+│   ├── controllers/   # Route controllers and business logic
+│   ├── routes/        # Express route definitions
+│   ├── middleware/    # Auth and security guards
+│   └── seed/          # Database seeding utilities
+└── .env.example       # Example environment variables
 ```
 
 ---
@@ -45,60 +45,77 @@ ecommerce/
 
 ### Prerequisites
 - Node.js v18+ installed
-- MongoDB running locally (or Atlas connection string)
+- MongoDB instance (Local or Atlas)
+- Git
 
-### Step 1: Clone / Open Project
-
-```
-cd c:\Users\raora\Desktop\shopcart\ecommerce
-
-
-### Step 3: Install Backend Dependencies
+### 1. Clone the Repository
 
 ```bash
+git clone https://github.com/AhamdRaza467/shopcart.git
+cd shopcart/ecommerce
+```
+
+### 2. Environment Configuration
+
+1. Create a `.env` file in the root directory.
+2. Copy the contents of `.env.example` into `.env`.
+3. Fill in your secure credentials (do not commit this file to version control):
+
+```env
+PORT=5000
+NODE_ENV=development
+
+# Database Configuration
+MONGO_URI=your_mongodb_connection_string_here
+
+# Security
+JWT_SECRET=your_secure_jwt_secret_here
+ADMIN_EMAIL=your_admin_email@example.com
+ADMIN_PASSWORD=your_secure_admin_password
+
+# Payment Gateway (JazzCash / Stripe)
+STRIPE_SECRET_KEY=your_stripe_secret
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+
+# Frontend Configuration
+FRONTEND_URL=http://localhost:5173
+```
+
+### 3. Install Dependencies
+
+Install dependencies for both the backend and frontend simultaneously:
+
+```bash
+# Install backend dependencies
 cd backend
 npm install
-```
 
-### Step 4: Install Frontend Dependencies
-
-```bash
+# Install frontend dependencies
 cd ../frontend
 npm install
 ```
 
-### Step 5: Seed the Database (20 Products)
+### 4. Database Seeding
 
-Make sure MongoDB is running, then:
+To populate the database with initial categories and product data, run the seed script from the `backend` directory. This will also create the initial admin user based on your `.env` configuration.
 
 ```bash
 cd backend
 npm run seed
 ```
 
-### Step 6: Create Admin User
+### 5. Running the Application Locally
 
-Start MongoDB shell or Compass and run:
-```javascript
-// In MongoDB shell
-use shopcart
-db.users.updateOne({ email: "admin@shopcart.pk" }, { $set: { role: "admin" } })
-```
+You will need two terminal windows to run both servers concurrently.
 
-Or register at `/register` with email `admin@shopcart.pk`, then update role in DB.
-
-### Step 7: Start the Backend Server
-
+**Terminal 1 (Backend Server):**
 ```bash
 cd backend
 npm run dev
 # Server runs on http://localhost:5000
 ```
 
-### Step 8: Start the Frontend
-
-In a new terminal:
-
+**Terminal 2 (Frontend Client):**
 ```bash
 cd frontend
 npm run dev
@@ -107,92 +124,42 @@ npm run dev
 
 ---
 
-## 🔗 API Routes
+## 🛡️ Security Best Practices
 
-### Auth
-```
-POST /api/auth/register
-POST /api/auth/login
-GET  /api/auth/me
-```
-
-### Products
-```
-GET    /api/products            (with ?search=, ?category=, ?sort=, ?page=)
-GET    /api/products/featured
-GET    /api/products/:id
-POST   /api/products            (Admin)
-PUT    /api/products/:id        (Admin)
-DELETE /api/products/:id        (Admin)
-POST   /api/products/:id/reviews (Auth)
-```
-
-### Orders
-```
-POST /api/orders/create         (Auth)
-GET  /api/orders/myorders       (Auth)
-GET  /api/orders                (Admin)
-PUT  /api/orders/:id/status     (Admin)
-```
-
-### Payment
-```
-POST /api/payment/jazzcash
-```
-
-### Admin
-```
-GET /api/admin/dashboard/stats  (Admin)
-GET /api/admin/users            (Admin)
-PUT /api/admin/users/:id/block  (Admin)
-```
+This project handles user data and payments. Please ensure the following when deploying to production:
+- **Never commit your `.env` file**. It is included in `.gitignore` by default.
+- Use strong, cryptographically secure random strings for your `JWT_SECRET`.
+- Ensure your MongoDB connection string uses restrictive IP whitelisting in production.
+- Use HTTPS/SSL for all production environments to secure JWT tokens and payment data in transit.
 
 ---
 
-## 💳 JazzCash Integration
+## 💳 Payment Integration
 
-The app uses JazzCash Mobile Wallet API (sandbox mode):
-- **Sandbox mode** (no real credentials): Uses mock transaction IDs automatically
-- **Live mode**: Add your real Merchant ID, Password, and Integrity Salt to `.env`
-
-The secure hash is computed using HMAC-SHA256 as per JazzCash API spec.
+The application integrates payment gateways for processing orders.
+- **Development/Sandbox:** Uses test credentials and mock transaction IDs.
+- **Production:** Requires real merchant credentials to be securely configured in the production environment variables.
+- All secure hashes are computed server-side using HMAC-SHA256.
 
 ---
 
 ## 👤 User Roles
 
-| Role | Access |
-|------|--------|
-| `user` | Browse, add to cart, checkout, view orders, write reviews |
-| `admin` | Everything + Admin panel at `/admin` |
+The system operates on a Role-Based Access Control (RBAC) architecture:
+
+| Role | Access Level |
+|------|--------------|
+| `user` | Can browse products, manage their cart, execute checkout, view personal order history, and submit product reviews. |
+| `admin` | Inherits all user permissions plus access to the secure `/admin` dashboard for managing inventory, orders, and user accounts. |
 
 ---
 
-## 🎨 Features
+## 🎨 Core Features
 
-- ✅ Dark theme with glassmorphism design
-- ✅ Auto-advancing hero slider
-- ✅ Category filtering + search + sort + pagination
-- ✅ Product reviews with star ratings
-- ✅ Cart with localStorage persistence
-- ✅ Free shipping threshold (Rs. 2,000+)
-- ✅ JazzCash Mobile Wallet payment
-- ✅ JWT auth stored in localStorage
-- ✅ Admin dashboard with revenue stats
-- ✅ Admin: Add/Edit/Delete products
-- ✅ Admin: Update order status
-- ✅ Admin: Block/Unblock users
-- ✅ Mobile responsive
-- ✅ Loading skeletons
-
----
-
-## 🌱 Seed Data
-
-20 products across 4 categories:
-- **Electronics**: Headphones, Speaker, Smart Watch, Phone Case, USB Hub
-- **Clothing**: T-Shirt, Dress, Hoodie, Jeans, Jacket
-- **Shoes**: Running, Sneakers, Formal, Sports, Sandals
-- **Accessories**: Wallet, Sunglasses, Belt, Cap, Backpack
-
-All prices in Pakistani Rupees (Rs.)
+- ✅ **Modern UI/UX**: Dark theme with glassmorphism design principles.
+- ✅ **Dynamic Filtering**: Category filtering, live search, sorting, and pagination.
+- ✅ **Authentication**: Secure JWT-based authentication with local storage persistence.
+- ✅ **Shopping Cart**: Persistent cart state management.
+- ✅ **Admin Dashboard**: Comprehensive analytics, order management, and user administration.
+- ✅ **Responsive**: Fully mobile-responsive layout utilizing Tailwind CSS.
+- ✅ **Performance**: Implementation of loading skeletons and optimized asset delivery.

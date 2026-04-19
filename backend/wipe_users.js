@@ -15,15 +15,15 @@ const wipeUsers = async () => {
     // Create a new default admin user
     const admin = new User({
       name: 'Admin',
-      email: 'admin@shopcart.com',
-      password: 'password123',
+      email: process.env.ADMIN_EMAIL || 'admin@shopcart.com',
+      password: process.env.ADMIN_PASSWORD || 'secureadminpass123',
       role: 'admin'
     });
 
     await admin.save();
-    console.log('Default Admin user created successfully:');
-    console.log('Email: admin@shopcart.com');
-    console.log('Password: password123');
+    console.log('Default Admin user created successfully.');
+    console.log(`Email: ${process.env.ADMIN_EMAIL || 'admin@shopcart.com'}`);
+    console.log('Password: [Check your .env ADMIN_PASSWORD or use default]');
 
     // Disconnect and exit
     await mongoose.disconnect();
