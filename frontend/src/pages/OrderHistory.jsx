@@ -27,7 +27,9 @@ export default function OrderHistory() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/orders/myorders');
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || '/api'}/orders/myorders`, {
+          headers: { Authorization: `Bearer ${user.token}` }
+        });
         setOrders(data);
       } catch (err) {
         toast.error('Failed to load orders');

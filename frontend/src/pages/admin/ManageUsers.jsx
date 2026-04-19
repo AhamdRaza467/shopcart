@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import AdminSidebar from '../../components/AdminSidebar';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function ManageUsers() {
   const [users, setUsers] = useState([]);

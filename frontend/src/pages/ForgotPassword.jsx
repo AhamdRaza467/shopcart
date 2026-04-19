@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { Mail, ArrowLeft, Loader2, KeyRound } from 'lucide-react';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');

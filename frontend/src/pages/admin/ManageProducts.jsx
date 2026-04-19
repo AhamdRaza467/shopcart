@@ -4,7 +4,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import AdminSidebar from '../../components/AdminSidebar';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 const CATEGORIES = ['Electronics', 'Clothing', 'Shoes', 'Accessories'];
 const emptyForm = { name: '', price: '', description: '', category: 'Electronics', image: '', stock: '' };
 

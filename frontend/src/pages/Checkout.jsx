@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 const initialAddress = { fullName: '', phone: '', address: '', city: '', province: '', postalCode: '' };
 

@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { Lock, Loader2, CheckCircle2, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function ResetPassword() {
   const [password, setPassword] = useState('');

@@ -5,7 +5,7 @@ import { CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 export default function StripeSuccess() {
   const [searchParams] = useSearchParams();

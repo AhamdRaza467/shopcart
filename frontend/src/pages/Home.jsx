@@ -48,8 +48,8 @@ export default function Home() {
     const fetchProducts = async () => {
       try {
         const [featRes, newRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/products/featured'),
-          axios.get('http://localhost:5000/api/products?sort=-createdAt&limit=8'),
+          axios.get(`${import.meta.env.VITE_API_URL || '/api'}/products/featured`),
+          axios.get(`${import.meta.env.VITE_API_URL || '/api'}/products?sort=-createdAt&limit=8`),
         ]);
         setFeaturedProducts(featRes.data);
         setNewArrivals(newRes.data.products);

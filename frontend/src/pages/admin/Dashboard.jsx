@@ -3,7 +3,7 @@ import { ShoppingBag, Users, Package, DollarSign, Clock, TrendingUp, TrendingDow
 import axios from 'axios';
 import AdminSidebar from '../../components/AdminSidebar';
 
-const API = 'http://localhost:5000/api';
+const API = import.meta.env.VITE_API_URL || '/api';
 
 const STATUS_COLOR = {
   Pending: 'bg-amber-50 text-amber-600 border-amber-200',

@@ -23,7 +23,7 @@ export default function SingleProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { data } = await axios.get(`${import.meta.env.VITE_API_URL || '/api'}/products/${id}`);
         setProduct(data);
       } catch (error) {
         toast.error('Failed to load product');
@@ -42,11 +42,11 @@ export default function SingleProduct() {
     setSubmittingReview(true);
     try {
       const config = { headers: { Authorization: `Bearer ${user.token}` } };
-      await axios.post(`http://localhost:5000/api/products/${id}/reviews`, { rating, comment }, config);
+      await axios.post(`${import.meta.env.VITE_API_URL || '/api'}/products/${id}/reviews`, { rating, comment }, config);
       toast.success('Review submitted successfully!');
       
       // Refresh product to show new review
-      const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+      const { data } = await axios.get(`${import.meta.env.VITE_API_URL || '/api'}/products/${id}`);
       setProduct(data);
       setComment('');
       setRating(5);

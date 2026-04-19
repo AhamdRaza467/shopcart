@@ -29,7 +29,7 @@ export default function Products() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        let url = `http://localhost:5000/api/products?page=${currentPage}&sort=${currentSort}`;
+        let url = `${import.meta.env.VITE_API_URL || '/api'}/products?page=${currentPage}&sort=${currentSort}`;
         if (currentCategory !== 'All') url += `&category=${currentCategory}`;
         if (currentSearch) url += `&search=${currentSearch}`;
 
